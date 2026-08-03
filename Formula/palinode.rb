@@ -10,8 +10,8 @@ class Palinode < Formula
   depends_on "python@3.12"
 
   def install
-    venv = virtualenv_create(libexec, "python3.12")
-    venv.pip_install buildpath
+    virtualenv_create(libexec, "python3.12")
+    system "python3.12", "-m", "pip", "--python=#{libexec}/bin/python", "install", buildpath
     bin.install_symlink libexec/"bin/palinode"
   end
 
