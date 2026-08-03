@@ -8,10 +8,11 @@ class Palinode < Formula
   license "MIT"
 
   depends_on "python@3.12"
+  depends_on "rust" => :build
 
   def install
     virtualenv_create(libexec, "python3.12")
-    system "python3.12", "-m", "pip", "--python=#{libexec}/bin/python", "install", buildpath
+    system "python3.12", "-m", "pip", "--python=#{libexec}/bin/python", "install", "--no-binary=nh3", buildpath
     bin.install_symlink libexec/"bin/palinode"
   end
 
