@@ -7,8 +7,8 @@ class Palinode < Formula
   sha256 "fefad5a3fda02c046385c98b2b21c49d1246125c0e7d17503381313595ecc24b"
   license "MIT"
 
-  depends_on "python@3.12"
   depends_on "rust" => :build
+  depends_on "python@3.12"
 
   def install
     virtualenv_create(libexec, "python3.12")
