@@ -26,7 +26,11 @@ formula template: that would change the previously validated packaging behavior.
 ## Enable automation
 
 In this tap's **Settings → Actions → General**, enable Actions and **Allow GitHub
-Actions to create and approve pull requests**. The updater uses the repository's
+Actions to create and approve pull requests**. If the organization disables this
+setting, an organization owner must first permit it under **Organization Settings
+→ Actions → General**; a repository-level change will return HTTP 409. Keep
+default workflow permissions read-only and grant writes only in the updater.
+The updater uses the repository's
 `GITHUB_TOKEN` with contents and pull-request write permissions; it does not approve
 or merge PRs. It also requests actions write permission to dispatch Formula CI.
 There is no cross-repository write token or personal token to configure.
