@@ -1,0 +1,49 @@
+name: Update stable release
+
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Optional stable tag to require (for example v0.19.1); older releases are refused"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+concurrency:
+  group: stable-release-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'phasespace-labs/homebrew-palinode' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test release selection and retry behavior
+        run: python -m unittest discover -s tests -v
+      - name: Prepare update PR and start its validation
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          python scripts/update_release.py --open-pr --release-tag "$RELEASE_TAG"
+      - name: Report incomplete distribution
+        if: failure()
+        run: |
+          echo 'Homebrew update failed. The published source release does not imply successful Homebrew distribution.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Inspect this run, fix the cause, then rerun failed jobs or use the manual release check. No automatic merge is performed.' >> "$GITHUB_STEP_SUMMARY"
