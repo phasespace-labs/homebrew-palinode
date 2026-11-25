@@ -3,8 +3,8 @@ class Palinode < Formula
 
   desc "Git-native persistent memory for AI agents"
   homepage "https://github.com/phasespace-labs/palinode"
-  url "https://github.com/phasespace-labs/palinode/archive/refs/tags/v0.24.1.tar.gz"
-  sha256 "6f07e16acb6112529f36170c87df4199d4af5164787462ce475e5ed675688810"
+  url "https://github.com/phasespace-labs/palinode/archive/refs/tags/v0.25.0.tar.gz"
+  sha256 "a4011c3fa87f50686ce6b6abc89286d3995aae0c21800aa3de2b57031c854486"
   license "MIT"
 
   depends_on "rust" => :build
